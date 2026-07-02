@@ -38,6 +38,15 @@
             z-index: 10;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        /* First slide is visible initially */
+        .card.active {
+            display: block;
+            opacity: 1;
         }
 
         h1 {
@@ -172,14 +181,15 @@
             width: 60px;
             height: 75px;
             border-radius: 50%;
-            animation: float-up 12s infinite ease-in;
+            animation: float-up 12s linear forwards;
             opacity: 0.8;
         }
 
         @keyframes float-up {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
             10% { opacity: 0.8; }
-            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
         }
 
         @keyframes flicker {
@@ -214,9 +224,9 @@
     <div class="balloon-container" id="balloons"></div>
 
     <!-- Main Greeting Card -->
-    <div class="card" id="cardMain">
+    <div class="card active" id="cardMain">
         <h1 id="title">Happy Birthday!</h1>
-        <p class="message" id="message">Wishing you a day filled with love and laughter. Blow the candles and click Next!</p>
+        <p class="message" id="message">Wishing you a day filled with love and laughter. Blow out the candles and click Next!</p>
 
         <div class="cake-container">
             <div class="candles">
@@ -231,54 +241,74 @@
     </div>
 
     <!-- Second Slide (Are you happy?) -->
-    <div class="card" id="slide2" style="display:none;">
+    <div class="card" id="slide2">
         <div class="floating-q">Are you happy?</div>
-        <div class="slide-buttons" id="slideButtons" style="position:relative; height:180px; margin-top: 20px; border: 1px dashed #eee;">
+        <div class="slide-buttons" id="slideButtons" style="position:relative; height:180px; margin-top: 20px; border: 1px dashed #eee; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
             <button class="btn" id="yesBtn">Yes</button>
             <!-- Floating No Button -->
-            <button class="btn no-btn" id="noBtn" style="position: absolute; transition: all 0.15s ease;">No</button>
+            <button class="btn no-btn" id="noBtn" style="position: absolute; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);">No</button>
         </div>
     </div>
 
     <!-- Third Slide (Personal Message) -->
-    <div class="card" id="slide3" style="display:none;">
+    <div class="card" id="slide3">
         <p id="finalMsg"></p>
         <div style="margin-top:18px;"><button class="btn" id="slide3Next">Next</button></div>
     </div>
 
     <!-- Fourth Slide (Second Mother Message) -->
-    <div class="card" id="slide4" style="display:none;">
-        <p id="thanksMsg" style="color:#444; font-size:1.1rem; line-height:1.6;">thank you to come my life and make me happy make more chalant in evry thing you are like my second mother (mummy 😋)</p>
+    <div class="card" id="slide4">
+        <p id="thanksMsg" style="color:#444; font-size:1.1rem; line-height:1.6;">Thank you for coming into my life, making me happy, and making me more chalant in everything. You are like my second mother (mummy 😋)</p>
         <div style="margin-top:18px;"><button class="btn" id="slide4Next">Next</button></div>
     </div>
 
     <!-- Fifth Slide (Penguin Question) -->
-    <div class="card" id="slide5" style="display:none;">
+    <div class="card" id="slide5">
+        <div style="font-size: 3.5rem; margin-bottom: 10px; animation: bounce 3s infinite;">🐧❤️🐧</div>
         <div class="floating-q">Will you be my penguin?</div>
-        <div style="margin-top:18px; display:flex; justify-content:center; gap:12px;">
+        <div style="margin-top:18px; display:flex; justify-content:center; align-items:center; gap:12px; min-height: 80px;">
             <button class="btn" id="pengYes">Yes</button>
-            <button class="btn" id="pengNo">No</button>
+            <button class="btn" id="pengNo" style="transition: all 0.2s ease;">No</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const recipientName = "ANANYA (anu)"; 
-            const yourSpecialParagraph = "Happy birthday ANANYA (anu) to the prettiest girl, i never want to see again. Who I love fiercely, even though you drive me absolutely crazy and completely own my soul 😙😙 (yours phulei🥰)";
+            const yourSpecialParagraph = "Happy Birthday, ANANYA (anu)! To the prettiest girl, whom I never want to see sad again. I love you fiercely, even though you drive me absolutely crazy and completely own my soul 😙😙 (yours, phulei 🥰)";
 
             document.getElementById('title').innerText = `Happy Birthday, ${recipientName}!`;
 
-            // Balloon Generation
+            // Continuous Balloon Generator
             const balloonColors = ['#ff6b6b', '#ff9f43', '#0abde3', '#10ac84', '#ee5253'];
             const balloonContainer = document.getElementById('balloons');
-            for (let i = 0; i < 15; i++) {
+
+            function createBalloon() {
                 const balloon = document.createElement('div');
                 balloon.classList.add('balloon');
                 balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-                balloon.style.left = `${Math.random() * 90}%`;
-                balloon.style.animationDelay = `${Math.random() * 8}s`;
+                balloon.style.left = `${Math.random() * 95}%`;
+                
+                // Add minor size variance for a natural feel
+                const size = Math.random() * 20 + 50; // 50px to 70px
+                balloon.style.width = `${size}px`;
+                balloon.style.height = `${size * 1.25}px`;
+                
+                // Random float duration
+                balloon.style.animationDuration = `${Math.random() * 6 + 6}s`; // 6s to 12s
                 balloonContainer.appendChild(balloon);
+
+                // Clean up balloon after animation completes
+                setTimeout(() => {
+                    balloon.remove();
+                }, 12000);
             }
+
+            // Generate initial batch, then keep spawning
+            for (let i = 0; i < 8; i++) {
+                createBalloon();
+            }
+            setInterval(createBalloon, 1200);
 
             // Candle Interaction
             const flames = document.querySelectorAll('.flame');
@@ -287,64 +317,113 @@
                 if(Array.from(flames).every(fl => fl.classList.contains('blown-out'))) triggerConfetti();
             }));
 
-            // Navigation
+            // Navigation helper with fade transitions
+            function transitionTo(currentId, nextId) {
+                const current = document.getElementById(currentId);
+                const next = document.getElementById(nextId);
+
+                current.style.opacity = '0';
+                setTimeout(() => {
+                    current.style.display = 'none';
+                    current.classList.remove('active');
+                    
+                    next.style.display = 'block';
+                    // Trigger reflow to let transition take effect
+                    next.offsetHeight; 
+                    next.classList.add('active');
+                    next.style.opacity = '1';
+                }, 400);
+            }
+
+            // Slide Navigation Triggers
             document.getElementById('actionBtn').addEventListener('click', () => {
-                document.getElementById('cardMain').style.display = 'none';
-                document.getElementById('slide2').style.display = 'block';
-                startNoFloating(); // Start moving the No button
+                transitionTo('cardMain', 'slide2');
+                resetNoButton(); // Position No button nicely to start
             });
 
             document.getElementById('yesBtn').addEventListener('click', () => {
                 triggerConfetti();
-                stopNoFloating();
-                document.getElementById('slide2').style.display = 'none';
-                document.getElementById('slide3').style.display = 'block';
+                transitionTo('slide2', 'slide3');
                 document.getElementById('finalMsg').innerText = yourSpecialParagraph;
             });
 
             document.getElementById('slide3Next').addEventListener('click', () => {
-                document.getElementById('slide3').style.display = 'none';
-                document.getElementById('slide4').style.display = 'block';
+                transitionTo('slide3', 'slide4');
             });
 
             document.getElementById('slide4Next').addEventListener('click', () => {
-                document.getElementById('slide4').style.display = 'none';
-                document.getElementById('slide5').style.display = 'block';
+                transitionTo('slide4', 'slide5');
             });
 
-            document.getElementById('pengYes').addEventListener('click', () => {
-                document.getElementById('slide5').innerHTML = `<div class="floating-q">Thank you for coming into Sahil's heart and life ❤️</div>`;
-                triggerConfetti();
-            });
-
-            document.getElementById('pengNo').addEventListener('click', () => {
-                alert("Oh no! 😭");
-            });
-
-            // FASTER FLOATING NO BUTTON LOGIC
-            let noInterval;
+            // Runaway "No" Button Interaction (Slide 2)
             const noBtn = document.getElementById('noBtn');
             const box = document.getElementById('slideButtons');
 
-            function startNoFloating() {
-                // Moving every 200 milliseconds for a "faster" feel
-                noInterval = setInterval(() => {
-                    const boxWidth = box.clientWidth;
-                    const boxHeight = box.clientHeight;
-                    const btnWidth = noBtn.offsetWidth;
-                    const btnHeight = noBtn.offsetHeight;
+            function moveNoButton() {
+                const boxWidth = box.clientWidth;
+                const boxHeight = box.clientHeight;
+                const btnWidth = noBtn.offsetWidth;
+                const btnHeight = noBtn.offsetHeight;
 
-                    const newLeft = Math.random() * (boxWidth - btnWidth);
-                    const newTop = Math.random() * (boxHeight - btnHeight);
+                // Max safe boundaries inside dotted box
+                const maxLeft = boxWidth - btnWidth - 15;
+                const maxTop = boxHeight - btnHeight - 15;
 
-                    noBtn.style.left = newLeft + "px";
-                    noBtn.style.top = newTop + "px";
-                }, 200); 
+                const newLeft = Math.max(15, Math.random() * maxLeft);
+                const newTop = Math.max(15, Math.random() * maxTop);
+
+                noBtn.style.left = `${newLeft}px`;
+                noBtn.style.top = `${newTop}px`;
             }
 
-            function stopNoFloating() {
-                clearInterval(noInterval);
+            function resetNoButton() {
+                noBtn.style.left = "70%";
+                noBtn.style.top = "40%";
             }
+
+            // Instantly moves away on hover or mobile tap
+            noBtn.addEventListener('mouseover', moveNoButton);
+            noBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                moveNoButton();
+            });
+
+            // Playful No Button Logic (Slide 5)
+            const pengNo = document.getElementById('pengNo');
+            const pengYes = document.getElementById('pengYes');
+            let noClickCount = 0;
+            const noTexts = [
+                "No",
+                "Are you sure? 🥺",
+                "Really? 💔",
+                "Think again! 🐧",
+                "Please? Say Yes! ❤️"
+            ];
+
+            pengNo.addEventListener('click', () => {
+                noClickCount++;
+                if (noClickCount < noTexts.length) {
+                    pengNo.innerText = noTexts[noClickCount];
+                    // Make Yes button grow and space out
+                    const currentScale = 1 + (noClickCount * 0.25);
+                    pengYes.style.transform = `scale(${currentScale})`;
+                    pengYes.style.marginRight = `${noClickCount * 15}px`;
+                } else {
+                    // Hide the No button entirely if they keep trying
+                    pengNo.style.display = 'none';
+                }
+            });
+
+            document.getElementById('pengYes').addEventListener('click', () => {
+                document.getElementById('slide5').innerHTML = `
+                    <div style="font-size: 4rem; margin-bottom: 10px;">🐧❤️🐧</div>
+                    <div class="floating-q">Thank you for coming into Sahil's heart and life ❤️</div>
+                `;
+                triggerConfetti();
+                // Continuous confetti show
+                setTimeout(triggerConfetti, 500);
+                setTimeout(triggerConfetti, 1000);
+            });
 
             function triggerConfetti() {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
@@ -352,4 +431,5 @@
         });
     </script>
 </body>
+
 </html>
