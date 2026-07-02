@@ -1,10 +1,10 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday my sweet heart!</title>
+    <title>Happy Birthday ANANYA!</title>
     <!-- Canvas Confetti Library for the celebration effect -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -27,7 +27,6 @@
             overflow: hidden;
         }
 
-        /* Container Card */
         .card {
             background: var(--card-bg);
             padding: 40px;
@@ -55,7 +54,6 @@
             margin-bottom: 30px;
         }
 
-        /* Birthday Cake CSS */
         .cake-container {
             position: relative;
             width: 200px;
@@ -75,7 +73,6 @@
             box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.05);
         }
 
-        /* Frosting */
         .cake::before {
             content: '';
             position: absolute;
@@ -87,7 +84,6 @@
             border-radius: 10px 10px 0 0;
         }
 
-        /* Cream Drips */
         .drips {
             position: absolute;
             top: 20px;
@@ -103,7 +99,6 @@
             border-radius: 50%;
         }
 
-        /* Candles */
         .candles {
             position: absolute;
             bottom: 110px;
@@ -117,11 +112,7 @@
             position: relative;
             width: 10px;
             height: 40px;
-            background: repeating-linear-gradient(45deg,
-                    #fff,
-                    #fff 5px,
-                    #3dc1d3 5px,
-                    #3dc1d3 10px);
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #3dc1d3 5px, #3dc1d3 10px);
             border-radius: 3px 3px 0 0;
         }
 
@@ -140,14 +131,12 @@
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        /* Blown out flame state */
         .flame.blown-out {
             opacity: 0;
             transform: translate(-50%, -10px) scale(0);
             pointer-events: none;
         }
 
-        /* Button */
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -167,11 +156,6 @@
             box-shadow: 0 6px 20px rgba(255, 107, 129, 0.6);
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        /* Floating Balloons */
         .balloon-container {
             position: absolute;
             width: 100%;
@@ -187,203 +171,92 @@
             bottom: -150px;
             width: 60px;
             height: 75px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            border-radius: 50%;
             animation: float-up 12s infinite ease-in;
             opacity: 0.8;
         }
 
-        .balloon::before {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 8px solid currentColor;
-        }
-
-        .balloon::after {
-            content: '';
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            width: 2px;
-            height: 25px;
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        /* Animations */
         @keyframes float-up {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: translateY(-110vh) rotate(20deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
         }
 
         @keyframes flicker {
-            0% {
-                transform: translateX(-50%) scale(1);
-            }
-
-            100% {
-                transform: translateX(-50%) scale(1.1) skewX(5deg);
-            }
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.1) skewX(5deg); }
         }
 
         @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* Crying emoji shower */
-        .cry-container {
-            position: relative;
-            width: 100%;
-            height: 120px;
-            overflow: hidden;
-            margin-top: 12px;
-        }
-
-        .cry-emoji,
-        .heart-emoji {
+        .cry-emoji, .heart-emoji {
             position: absolute;
             top: -40px;
             animation-name: fall;
             animation-timing-function: linear;
             animation-fill-mode: forwards;
-            opacity: 1;
-        }
-
-        .popup-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: nowrap;
-            margin-top: 18px;
-        }
-
-        .popup-row .floating-q {
-            max-width: 160px;
-            padding: 0 8px;
-            text-align: center;
-        }
-
-        .popup-image {
-            width: 90px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 16px;
-            border: 2px solid rgba(255, 107, 129, 0.35);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-        }
-
-        @keyframes pop {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .cry-emoji {
-            font-size: 28px;
-        }
-
-        .heart-emoji {
-            font-size: 28px;
-            color: #ff4757;
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(220px);
-                opacity: 0;
-            }
+            to { transform: translateY(220px); opacity: 0; }
+        }
+
+        /* Styling for your specific request */
+        #finalMsg {
+            text-align: right;
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-style: italic;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Background Balloons -->
     <div class="balloon-container" id="balloons"></div>
 
     <!-- Main Greeting Card -->
     <div class="card" id="cardMain">
         <h1 id="title">Happy Birthday!</h1>
-        <p class="message" id="message">Wishing you a day filled with love, laughter, and all your favorite things. May
-            the coming year bring you happiness and success!</p>
+        <p class="message" id="message">Wishing you a day filled with love and laughter. May the coming year bring you happiness and success!</p>
 
-        <!-- Interactive Cake -->
         <div class="cake-container">
             <div class="candles">
-                <div class="candle">
-                    <div class="flame"></div>
-                </div>
-                <div class="candle">
-                    <div class="flame"></div>
-                </div>
-                <div class="candle">
-                    <div class="flame"></div>
-                </div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
             </div>
-            <div class="cake">
-                <div class="drips">
-                    <div class="drip"></div>
-                    <div class="drip"></div>
-                    <div class="drip"></div>
-                    <div class="drip"></div>
-                </div>
-            </div>
+            <div class="cake"><div class="drips"><div class="drip"></div><div class="drip"></div><div class="drip"></div><div class="drip"></div></div></div>
         </div>
 
         <button class="btn" id="actionBtn" style="transform: translateY(-16px);">Next</button>
     </div>
 
-    <!-- Second Slide (hidden initially) -->
+    <!-- Second Slide -->
     <div class="card" id="slide2" style="display:none;">
         <div class="floating-q">Are you happy?</div>
-        <div class="slide-buttons" id="slideButtons" style="position:relative; height:140px;">
+        <div class="slide-buttons" id="slideButtons" style="position:relative; height:140px; margin-top: 20px;">
             <button class="btn" id="yesBtn">Yes</button>
-            <button class="btn no-btn" id="noBtn" aria-disabled="true">No</button>
+            <button class="btn no-btn" id="noBtn" style="position: absolute;">No</button>
         </div>
     </div>
 
-    <!-- Third Slide (final message) -->
+    <!-- Third Slide (Your Personal Message) -->
     <div class="card" id="slide3" style="display:none;">
-        <p id="finalMsg" style="color:#444; font-size:1.1rem; line-height:1.6;"> </p>
+        <p id="finalMsg"></p>
         <div style="margin-top:18px;"><button class="btn" id="slide3Next">Next</button></div>
     </div>
 
-    <!-- Fourth Slide (thank-you message) -->
+    <!-- Fourth Slide -->
     <div class="card" id="slide4" style="display:none;">
-        <p id="thanksMsg" style="color:#444; font-size:1.1rem; line-height:1.6;">thank you to come my life and make me
-            happy make more chalant in evry thing you are like my second mother (mummy 😋)</p>
+        <p id="thanksMsg" style="color:#444; font-size:1.1rem; line-height:1.6;">thank you to come my life and make me happy make more chalant in evry thing you are like my second mother (mummy 😋)</p>
         <div style="margin-top:18px;"><button class="btn" id="slide4Next">Next</button></div>
     </div>
 
-    <!-- Fifth Slide (penguin question) -->
+    <!-- Fifth Slide -->
     <div class="card" id="slide5" style="display:none;">
         <div class="floating-q">Will you be my penguin?</div>
         <div style="margin-top:18px; display:flex; justify-content:center; gap:12px;">
@@ -392,321 +265,95 @@
         </div>
     </div>
 
-    <!-- Sixth Slide (result / crying shower) -->
+    <!-- Sixth Slide -->
     <div class="card" id="slide6" style="display:none;">
         <div id="resultBox" style="color:#444; font-size:1.1rem; line-height:1.6; min-height:60px;"></div>
         <div class="cry-container" id="cryContainer"></div>
         <div style="margin-top:12px;">
             <button class="btn" id="goHomeBtn">Go Home</button>
-            <button id="invisibleTimerBtn" style="display:none;"></button>
         </div>
     </div>
-    <input type="file" id="photoPicker" accept="image/*" multiple style="display:none;" />
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Customizations (Change these to personalize)
-            const recipientName = "my sweet heart"; // Change to the person's name
-            const customMessage = "Wishing you a wonderful day ahead! Click the candle flames to make your birthday wish or press Next to continue.";
+            // UPDATED CUSTOMIZATION
+            const recipientName = "ANANYA (anu)"; 
+            const yourSpecialParagraph = "Happy birthday ANANYA (anu) to the prettiest girl, i never want to see again. Who I love fiercely, even though you drive me absolutely crazy and completely own my soul 😙😙 (yours phulei🥰)";
 
-            // Set personalized text
-            if (recipientName) {
-                document.getElementById('title').innerText = `Happy Birthday, ${recipientName}!`;
-            }
-            if (customMessage) {
-                document.getElementById('message').innerText = customMessage;
-            }
+            document.getElementById('title').innerText = `Happy Birthday, ${recipientName}!`;
 
-            // Generate Random Floating Balloons
-            const balloonColors = ['#ff6b6b', '#ff9f43', '#0abde3', '#10ac84', '#ee5253', '#00d2d3', '#54a0ff', '#5f27cd'];
+            // Setup Balloons
+            const balloonColors = ['#ff6b6b', '#ff9f43', '#0abde3', '#10ac84', '#ee5253'];
             const balloonContainer = document.getElementById('balloons');
-
             for (let i = 0; i < 15; i++) {
                 const balloon = document.createElement('div');
                 balloon.classList.add('balloon');
-
-                // Randomize appearance
-                const randomColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-                balloon.style.backgroundColor = randomColor;
-                balloon.style.color = randomColor; // Used for the tie triangle
+                balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
                 balloon.style.left = `${Math.random() * 90}%`;
                 balloon.style.animationDelay = `${Math.random() * 8}s`;
-                balloon.style.animationDuration = `${8 + Math.random() * 8}s`;
-
                 balloonContainer.appendChild(balloon);
             }
 
-            // Flames interaction
+            // Navigation Logic
             const flames = document.querySelectorAll('.flame');
-            flames.forEach(flame => {
-                flame.addEventListener('click', () => {
-                    flame.classList.add('blown-out');
-                    checkFlamesAndCelebrate();
-                });
+            flames.forEach(f => f.addEventListener('click', () => {
+                f.classList.add('blown-out');
+                if(Array.from(flames).every(fl => fl.classList.contains('blown-out'))) triggerConfetti();
+            }));
+
+            document.getElementById('actionBtn').addEventListener('click', () => {
+                document.getElementById('cardMain').style.display = 'none';
+                document.getElementById('slide2').style.display = 'block';
+                startNoFloating();
             });
 
-            // Main button -> navigate to slide 2
-            const actionBtn = document.getElementById('actionBtn');
-            actionBtn.addEventListener('click', goToSlide2);
-
-            // Slide2 elements
-            const slide2 = document.getElementById('slide2');
-            const slide3 = document.getElementById('slide3');
-            const slide4 = document.getElementById('slide4');
-            const slide5 = document.getElementById('slide5');
-            const slide6 = document.getElementById('slide6');
-            const cardMain = document.getElementById('cardMain');
-            const yesBtn = document.getElementById('yesBtn');
-            const noBtn = document.getElementById('noBtn');
-            const slideButtons = document.getElementById('slideButtons');
-            const slide3Next = document.getElementById('slide3Next');
-            const slide4Next = document.getElementById('slide4Next');
-            const pengYes = document.getElementById('pengYes');
-            const pengNo = document.getElementById('pengNo');
-            const resultBox = document.getElementById('resultBox');
-            const cryContainer = document.getElementById('cryContainer');
-            const goHomeBtn = document.getElementById('goHomeBtn');
-            const invisibleTimerBtn = document.getElementById('invisibleTimerBtn');
-            const photoPicker = document.getElementById('photoPicker');
-            let globalCryInterval = null;
-
-            yesBtn.addEventListener('click', areyouhappy);
-
-            // Make 'No' float around and not clickable (faster movement)
-            noBtn.style.position = 'absolute';
-            noBtn.style.pointerEvents = 'none';
-            noBtn.style.transition = 'left 0.19s ease, top 0.19s ease';
-
-            let noInterval;
-            function startNoFloating() {
-                // Move immediately and then periodically (faster)
-                moveNo();
-                noInterval = setInterval(moveNo, 300);
-            }
-
-            function stopNoFloating() {
-                clearInterval(noInterval);
-            }
-
-            function moveNo() {
-                const rect = slideButtons.getBoundingClientRect();
-                const maxX = Math.max(0, rect.width - noBtn.offsetWidth - 10);
-                const maxY = Math.max(0, rect.height - noBtn.offsetHeight - 10);
-                const left = Math.random() * maxX;
-                const top = Math.random() * maxY;
-                noBtn.style.left = `${left}px`;
-                noBtn.style.top = `${top}px`;
-            }
-
-            function goToSlide2() {
-                cardMain.style.display = 'none';
-                slide2.style.display = 'block';
-                startNoFloating();
-            }
-
-            // "Make a Wish" / Yes button functionality
-            function areyouhappy() {
-                // Blow out all flames (if any left)
-                flames.forEach(flame => flame.classList.add('blown-out'));
-
-                // Trigger confetti explosion
+            document.getElementById('yesBtn').addEventListener('click', () => {
                 triggerConfetti();
-
-                // Navigate to final slide and show personalized message
-                slide2.style.display = 'none';
-                slide3.style.display = 'block';
+                document.getElementById('slide2').style.display = 'none';
+                document.getElementById('slide3').style.display = 'block';
+                document.getElementById('finalMsg').innerText = yourSpecialParagraph;
                 stopNoFloating();
-                const finalText = "make you happy is my right and my happiness always loving you today and make you love hope you do the same yours phulei🥰";
-                const finalEl = document.getElementById('finalMsg');
-                if (finalEl) finalEl.innerText = finalText;
-                // Wire slide3 Next to slide4
-                if (slide3Next) {
-                    slide3Next.addEventListener('click', () => {
-                        slide3.style.display = 'none';
-                        if (slide4) slide4.style.display = 'block';
-                    });
-                }
-                // Wire slide4 Next to slide5 (penguin question)
-                if (slide4Next) {
-                    slide4Next.addEventListener('click', () => {
-                        slide4.style.display = 'none';
-                        if (slide5) slide5.style.display = 'block';
-                    });
-                }
+            });
 
-                // Penguin question handlers
-                if (pengYes) {
-                    pengYes.addEventListener('click', () => {
-                        if (!slide5) return;
-                        slide5.innerHTML = `
-                            <div class="floating-q">are you sure this is proposal?</div>
-                            <div style="margin-top:18px; display:flex; justify-content:center; gap:12px;">
-                                <button class="btn" id="confirmYes">Yes</button>
-                                <button class="btn" id="confirmNo">No</button>
-                            </div>
-                            <div class="heart-container" id="heartContainer"></div>
-                        `;
-                        const confirmYes = document.getElementById('confirmYes');
-                        const confirmNo = document.getElementById('confirmNo');
-                        const heartContainer = document.getElementById('heartContainer');
+            document.getElementById('slide3Next').addEventListener('click', () => {
+                document.getElementById('slide3').style.display = 'none';
+                document.getElementById('slide4').style.display = 'block';
+            });
 
-                        if (confirmYes) {
-                            confirmYes.addEventListener('click', () => {
-                                slide5.innerHTML = `
-                                    <div class="popup-row">
-                                        <img class="popup-image" src="img_20260614.jpg" alt="Photo 1" onerror="this.style.display='none'" />
-                                        <div class="floating-q">thank you for commin sahils heart and life</div>
-                                        <img class="popup-image" src="screenshot_20250929.jpg" alt="Photo 2" onerror="this.style.display='none'" />
-                                    </div>
-                                    <div class="heart-container" id="heartContainer"></div>
-                                `;
-                                const heartContainer2 = document.getElementById('heartContainer');
-                                startHeartRain(heartContainer2);
-                            });
-                        }
-                        if (confirmNo) {
-                            confirmNo.addEventListener('click', () => {
-                                if (slide5) slide5.style.display = 'none';
-                                if (slide6) slide6.style.display = 'block';
-                                if (resultBox) resultBox.innerText = "it's ok 👍 thanks";
-                                startCryingRain();
-                                startGlobalCryingRain();
-                            });
-                        }
-                    });
-                }
+            document.getElementById('slide4Next').addEventListener('click', () => {
+                document.getElementById('slide4').style.display = 'none';
+                document.getElementById('slide5').style.display = 'block';
+            });
 
-                if (pengNo) {
-                    pengNo.addEventListener('click', () => {
-                        if (slide5) slide5.style.display = 'none';
-                        if (slide6) slide6.style.display = 'block';
-                        if (resultBox) resultBox.innerText = "it's ok 👍 thanks";
-                    });
-                }
+            document.getElementById('pengYes').addEventListener('click', () => {
+                document.getElementById('slide5').innerHTML = `<div class="floating-q">Thank you for coming into Sahil's heart and life ❤️</div>`;
+                triggerConfetti();
+            });
 
-                // Go Home button behavior (reloads to reset the page)
-                if (goHomeBtn) {
-                    goHomeBtn.addEventListener('click', () => {
-                        stopGlobalCryingRain();
-                        // reload to restore initial state
-                        window.location.reload();
-                    });
-                }
-            }
+            document.getElementById('pengNo').addEventListener('click', () => {
+                document.getElementById('slide5').style.display = 'none';
+                document.getElementById('slide6').style.display = 'block';
+                document.getElementById('resultBox').innerText = "It's ok 👍 thanks";
+            });
 
-            // Check if all flames are clicked/blown out to trigger celebration
-            function checkFlamesAndCelebrate() {
-                const allBlownOut = Array.from(flames).every(f => f.classList.contains('blown-out'));
-                if (allBlownOut) {
-                    triggerConfetti();
-                    document.getElementById('actionBtn').innerText = "Wish Made! ✨";
-                    document.getElementById('actionBtn').disabled = true;
-                    document.getElementById('actionBtn').style.opacity = "0.7";
-                }
-            }
+            document.getElementById('goHomeBtn').addEventListener('click', () => window.location.reload());
 
-            // Crying emoji shower
-            function startCryingRain() {
-                if (!cryContainer) return;
-                // create several emojis with random left positions
-                for (let i = 0; i < 20; i++) {
-                    const e = document.createElement('div');
-                    e.className = 'cry-emoji';
-                    e.style.left = `${Math.random() * 90}%`;
-                    e.style.fontSize = `${18 + Math.random() * 22}px`;
-                    e.style.animationDuration = `${1.8 + Math.random() * 1.4}s`;
-                    e.innerText = '😭';
-                    cryContainer.appendChild(e);
-                    // remove after animation
-                    setTimeout(() => e.remove(), 4000);
-                }
-            }
-
-            // Replace background balloons with crying emojis
-            function startGlobalCryingRain() {
-                if (!balloonContainer) return;
-                // prevent multiple intervals
-                if (globalCryInterval) return;
-                // clear existing balloons
-                balloonContainer.innerHTML = '';
-                // spawn initial wave
-                const spawnWave = (count) => {
-                    for (let i = 0; i < count; i++) {
-                        const e = document.createElement('div');
-                        e.className = 'cry-emoji';
-                        e.style.left = `${Math.random() * 98}%`;
-                        e.style.top = `${-20 - Math.random() * 60}px`;
-                        e.style.fontSize = `${20 + Math.random() * 30}px`;
-                        e.style.animationDuration = `${2 + Math.random() * 2}s`;
-                        e.style.position = 'absolute';
-                        e.innerText = '😭';
-                        balloonContainer.appendChild(e);
-                        setTimeout(() => e.remove(), 5000);
-                    }
-                };
-                spawnWave(30);
-                // continue spawning waves indefinitely
-                globalCryInterval = setInterval(() => spawnWave(12), 600);
-            }
-
-            function startHeartRain(container) {
-                if (!container) return;
-                const spawnWave = (count) => {
-                    for (let i = 0; i < count; i++) {
-                        const e = document.createElement('div');
-                        e.className = 'heart-emoji';
-                        e.style.left = `${Math.random() * 98}%`;
-                        e.style.fontSize = `${18 + Math.random() * 20}px`;
-                        e.style.animationDuration = `${1.8 + Math.random() * 1.5}s`;
-                        e.innerText = '❤️';
-                        container.appendChild(e);
-                        setTimeout(() => e.remove(), 5000);
-                    }
-                };
-                spawnWave(20);
-                return setInterval(() => spawnWave(12), 500);
-            }
-
-            // Optionally stop the global crying rain (not used by default)
-            function stopGlobalCryingRain() {
-                if (globalCryInterval) {
-                    clearInterval(globalCryInterval);
-                    globalCryInterval = null;
-                }
-            }
-
-            // Confetti helper function
-            function triggerConfetti() {
-                if (typeof confetti !== 'function') return;
-
-                // Simple initial burst
-                confetti({
-                    particleCount: 150,
-                    spread: 80,
-                    origin: { y: 0.6 }
-                });
-
-                // Delayed smaller bursts
-                setTimeout(() => {
-                    confetti({
-                        particleCount: 50,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 }
-                    });
-                }, 250);
-
-                setTimeout(() => {
-                    confetti({
-                        particleCount: 50,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 }
-                    });
+            // Floating "No" Button logic
+            let noInterval;
+            const noBtn = document.getElementById('noBtn');
+            function startNoFloating() {
+                noInterval = setInterval(() => {
+                    const rect = document.getElementById('slideButtons').getBoundingClientRect();
+                    noBtn.style.left = Math.random() * (rect.width - 50) + "px";
+                    noBtn.style.top = Math.random() * (rect.height - 40) + "px";
                 }, 400);
+            }
+            function stopNoFloating() { clearInterval(noInterval); }
+
+            function triggerConfetti() {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             }
         });
     </script>
 </body>
-
 </html>
