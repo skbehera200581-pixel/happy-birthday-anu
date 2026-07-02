@@ -14,7 +14,7 @@
             --primary-color: #ff6b81;
             --secondary-color: #feca57;
             --background-grad: linear-gradient(135deg, #ffeef8 0%, #e8f0fe 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
@@ -229,54 +229,95 @@
             transform: translate(-50%, 40px) scale(0);
         }
 
-        /* Eat Cake Interactivity Styles */
-        .slices-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            min-height: 80px;
+        /* Sweet Cake Serving Styles */
+        .sweet-slice-container {
+            position: relative;
+            width: 200px;
+            height: 140px;
+            margin: 30px auto;
+            cursor: pointer;
         }
 
-        .slice {
-            width: 65px;
-            height: 50px;
-            background: #f3a683;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .plate {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 16px;
+            background: #e4e7eb;
+            border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.06);
         }
 
-        .slice::before {
+        .cake-slice {
+            position: absolute;
+            bottom: 15px;
+            left: 45px;
+            width: 110px;
+            height: 75px;
+            background: linear-gradient(to bottom, 
+                #f8a5c2 0%, #f8a5c2 20%, 
+                #ffffff 20%, #ffffff 30%, 
+                #f3a683 30%, #f3a683 60%, 
+                #ffffff 60%, #ffffff 70%, 
+                #f8a5c2 70%, #f8a5c2 100%
+            );
+            clip-path: polygon(100% 100%, 0% 100%, 100% 0%);
+            transition: all 0.3s ease;
+        }
+
+        .cherry {
+            position: absolute;
+            top: 40px;
+            right: 42px;
+            width: 18px;
+            height: 18px;
+            background: #ff4757;
+            border-radius: 50%;
+            z-index: 11;
+            transition: all 0.3s ease;
+        }
+
+        .cherry::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 14px;
-            background: #f8a5c2;
-            border-radius: 4px 4px 0 0;
-        }
-
-        .slice-cream {
-            position: absolute;
             top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: white;
+            left: 8px;
+            width: 2px;
+            height: 8px;
+            border-left: 2px solid #2f3542;
+            transform: rotate(20deg);
+        }
+
+        /* Bite mask simulation using overlapping circles colored like the card background */
+        .bite {
+            position: absolute;
+            background: var(--card-bg);
             border-radius: 50%;
+            display: none;
+            z-index: 12;
+        }
+        #bite1 {
+            top: 45px;
+            right: 35px;
+            width: 32px;
+            height: 32px;
+        }
+        #bite2 {
+            top: 60px;
+            right: 55px;
+            width: 35px;
+            height: 35px;
+        }
+        #bite3 {
+            top: 40px;
+            right: 75px;
+            width: 40px;
+            height: 40px;
         }
 
-        .slice.eaten {
-            transform: scale(0) rotate(15deg);
-            opacity: 0;
-            pointer-events: none;
-        }
-
+        /* Buttons Styling */
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -289,6 +330,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
             font-family: 'Poppins', sans-serif;
+            display: inline-block;
         }
 
         .btn:hover {
@@ -297,9 +339,32 @@
             box-shadow: 0 6px 20px rgba(255, 107, 129, 0.6);
         }
 
-        /* Helper to hide element smoothly */
+        /* Disabled state for locked actions */
+        .btn.locked {
+            background-color: #a4b0be;
+            box-shadow: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .btn.locked:hover {
+            background-color: #a4b0be;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Hide elements helper */
         .btn.hidden {
-            display: none;
+            display: none !important;
+        }
+
+        /* Shaking animation when clicking a locked button */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .shake-animation {
+            animation: shake 0.3s ease-in-out;
         }
 
         .balloon-container {
@@ -382,13 +447,13 @@
             </div>
         </div>
 
-        <button class="btn hidden" id="actionBtn" style="transform: translateY(-16px);">Next</button>
+        <button class="btn locked" id="actionBtn" style="transform: translateY(-16px);">Next</button>
     </div>
 
     <!-- Slide 2: Cut the Cake -->
     <div class="card" id="slideCut">
         <h1 style="font-size: 2rem;">Cut the Cake! 🎂</h1>
-        <p class="message">Click on the cake or use the button below to cut it.</p>
+        <p class="message" id="cutMessage">Click on the cake or use the button below to cut it.</p>
         
         <div class="cut-cake-container" id="cutCakeContainer">
             <div class="knife">🔪</div>
@@ -402,19 +467,23 @@
         </div>
     </div>
 
-    <!-- Slide 3: Eat the Cake -->
+    <!-- Slide 3: Sweet Slice Serving -->
     <div class="card" id="slideEat">
-        <h1 style="font-size: 2rem;">Eat the Cake! 🍰</h1>
-        <p class="message">Click on each slice of cake or use the button below to eat them all!</p>
+        <h1 style="font-size: 2rem;">A Sweet Slice for You! 🍰</h1>
+        <p class="message" id="eatMessage">Sahil serves you a special slice of cake. Click on the slice to take a bite! 😋</p>
         
-        <div class="slices-container">
-            <div class="slice" id="slice1"><div class="slice-cream"></div></div>
-            <div class="slice" id="slice2"><div class="slice-cream"></div></div>
-            <div class="slice" id="slice3"><div class="slice-cream"></div></div>
+        <div class="sweet-slice-container" id="sweetSliceContainer">
+            <div class="plate"></div>
+            <div class="cake-slice" id="cakeSlice"></div>
+            <div class="cherry" id="cakeCherry"></div>
+            <!-- Bite circles overlaying the slice -->
+            <div class="bite" id="bite1"></div>
+            <div class="bite" id="bite2"></div>
+            <div class="bite" id="bite3"></div>
         </div>
 
         <div style="margin-top: 15px;">
-            <button class="btn" id="eatActionBtn">Eat the Cake 😋</button>
+            <button class="btn" id="eatActionBtn">Take a Bite 😋</button>
             <button class="btn hidden" id="eatNextBtn">Next</button>
         </div>
     </div>
@@ -484,13 +553,16 @@
             }
             setInterval(createBalloon, 1200);
 
-            // Candle Interaction: reveal 'Next' button once all are blown out
+            // Candle Interaction: unlock "Next" button once all are blown out
             const flames = document.querySelectorAll('.flame');
+            const actionBtn = document.getElementById('actionBtn');
+
             flames.forEach(f => f.addEventListener('click', () => {
                 f.classList.add('blown-out');
                 if(Array.from(flames).every(fl => fl.classList.contains('blown-out'))) {
                     triggerConfetti();
-                    document.getElementById('actionBtn').classList.remove('hidden');
+                    actionBtn.classList.remove('locked');
+                    actionBtn.innerText = "Next";
                 }
             }));
 
@@ -511,20 +583,36 @@
                 }, 400);
             }
 
-            // Slide 1 -> Slide 2 (Cut Cake)
-            document.getElementById('actionBtn').addEventListener('click', () => {
-                transitionTo('cardMain', 'slideCut');
+            // Slide 1 Next logic (with locked prevention)
+            actionBtn.addEventListener('click', () => {
+                if (actionBtn.classList.contains('locked')) {
+                    actionBtn.classList.add('shake-animation');
+                    const originalText = actionBtn.innerText;
+                    actionBtn.innerText = "Blow candles first! 🕯️";
+                    setTimeout(() => {
+                        actionBtn.classList.remove('shake-animation');
+                    }, 300);
+                    setTimeout(() => {
+                        if (actionBtn.classList.contains('locked')) {
+                            actionBtn.innerText = originalText;
+                        }
+                    }, 2000);
+                } else {
+                    transitionTo('cardMain', 'slideCut');
+                }
             });
 
             // Slide 2: Cut Cake logic
             const cutContainer = document.getElementById('cutCakeContainer');
             const cutActionBtn = document.getElementById('cutActionBtn');
             const cutNextBtn = document.getElementById('cutNextBtn');
+            const cutMessage = document.getElementById('cutMessage');
 
             function performCut() {
                 if (!cutContainer.classList.contains('is-cut')) {
                     cutContainer.classList.add('is-cut');
                     triggerConfetti();
+                    cutMessage.innerText = "Beautifully cut! Click Next to serve the slice. ❤️";
                     cutActionBtn.classList.add('hidden');
                     setTimeout(() => {
                         cutNextBtn.classList.remove('hidden');
@@ -540,47 +628,48 @@
                 transitionTo('slideCut', 'slideEat');
             });
 
-            // Slide 3: Eat Cake logic
-            const slices = document.querySelectorAll('.slice');
+            // Slide 3: Sweet Bite Eating logic
+            const sweetSliceContainer = document.getElementById('sweetSliceContainer');
             const eatActionBtn = document.getElementById('eatActionBtn');
             const eatNextBtn = document.getElementById('eatNextBtn');
-            let slicesEaten = 0;
+            const eatMessage = document.getElementById('eatMessage');
+            const cakeSlice = document.getElementById('cakeSlice');
+            const cakeCherry = document.getElementById('cakeCherry');
+            
+            let bitesTaken = 0;
+            const biteTexts = [
+                "Mmm, strawberry frosting is so sweet! 🍓 Click again for another bite!",
+                "Yummy! Soft layers and delicious cream... 😍 One more bite!",
+                "Delicious! You finished your slice! Best cake ever! 🥰"
+            ];
 
-            function eatSlice(slice) {
-                if (!slice.classList.contains('eaten')) {
-                    slice.classList.add('eaten');
-                    slicesEaten++;
-                    
-                    // Show "Next" when all 3 slices are eaten
-                    if (slicesEaten === slices.length) {
+            function takeBite() {
+                if (bitesTaken < 3) {
+                    bitesTaken++;
+                    document.getElementById(`bite${bitesTaken}`).style.display = 'block';
+
+                    // First bite removes the cherry
+                    if (bitesTaken === 1) {
+                        cakeCherry.style.opacity = '0';
+                    }
+
+                    // Update instruction message
+                    eatMessage.innerText = biteTexts[bitesTaken - 1];
+
+                    // If finished, hide eat action button and reveal Next button
+                    if (bitesTaken === 3) {
+                        cakeSlice.style.opacity = '0'; // Slice is gone
                         eatActionBtn.classList.add('hidden');
+                        triggerConfetti();
                         setTimeout(() => {
-                            triggerConfetti();
                             eatNextBtn.classList.remove('hidden');
-                        }, 400);
+                        }, 500);
                     }
                 }
             }
 
-            // Click individually
-            slices.forEach(slice => {
-                slice.addEventListener('click', () => {
-                    eatSlice(slice);
-                });
-            });
-
-            // "Eat Cake" button logic (Eats remaining slices sequentially)
-            eatActionBtn.addEventListener('click', () => {
-                let delay = 0;
-                slices.forEach(slice => {
-                    if (!slice.classList.contains('eaten')) {
-                        setTimeout(() => {
-                            eatSlice(slice);
-                        }, delay);
-                        delay += 300; // brief delay between each slice being eaten
-                    }
-                });
-            });
+            sweetSliceContainer.addEventListener('click', takeBite);
+            eatActionBtn.addEventListener('click', takeBite);
 
             // Slide 3 -> Slide 4 (Are you happy?)
             eatNextBtn.addEventListener('click', () => {
@@ -670,8 +759,13 @@
                 setTimeout(triggerConfetti, 1000);
             });
 
+            // Safe confetti trigger (prevents site crashes if CDN fails)
             function triggerConfetti() {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                try {
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                } catch (error) {
+                    console.log("Confetti script loading slow/blocked; proceeding safely.");
+                }
             }
         });
     </script>
