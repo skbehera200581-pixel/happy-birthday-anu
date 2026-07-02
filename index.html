@@ -192,25 +192,20 @@
             50% { transform: translateY(-10px); }
         }
 
-        .cry-emoji, .heart-emoji {
-            position: absolute;
-            top: -40px;
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-fill-mode: forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(220px); opacity: 0; }
-        }
-
-        /* Styling for your specific request */
+        /* Message Aligned to Right */
         #finalMsg {
             text-align: right;
             color: #444;
             font-size: 1.1rem;
             line-height: 1.6;
-            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .floating-q {
+            font-size: 1.4rem;
+            color: #ff6b81;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -221,7 +216,7 @@
     <!-- Main Greeting Card -->
     <div class="card" id="cardMain">
         <h1 id="title">Happy Birthday!</h1>
-        <p class="message" id="message">Wishing you a day filled with love and laughter. May the coming year bring you happiness and success!</p>
+        <p class="message" id="message">Wishing you a day filled with love and laughter. Blow the candles and click Next!</p>
 
         <div class="cake-container">
             <div class="candles">
@@ -235,28 +230,29 @@
         <button class="btn" id="actionBtn" style="transform: translateY(-16px);">Next</button>
     </div>
 
-    <!-- Second Slide -->
+    <!-- Second Slide (Are you happy?) -->
     <div class="card" id="slide2" style="display:none;">
         <div class="floating-q">Are you happy?</div>
-        <div class="slide-buttons" id="slideButtons" style="position:relative; height:140px; margin-top: 20px;">
+        <div class="slide-buttons" id="slideButtons" style="position:relative; height:180px; margin-top: 20px; border: 1px dashed #eee;">
             <button class="btn" id="yesBtn">Yes</button>
-            <button class="btn no-btn" id="noBtn" style="position: absolute;">No</button>
+            <!-- Floating No Button -->
+            <button class="btn no-btn" id="noBtn" style="position: absolute; transition: all 0.15s ease;">No</button>
         </div>
     </div>
 
-    <!-- Third Slide (Your Personal Message) -->
+    <!-- Third Slide (Personal Message) -->
     <div class="card" id="slide3" style="display:none;">
         <p id="finalMsg"></p>
         <div style="margin-top:18px;"><button class="btn" id="slide3Next">Next</button></div>
     </div>
 
-    <!-- Fourth Slide -->
+    <!-- Fourth Slide (Second Mother Message) -->
     <div class="card" id="slide4" style="display:none;">
         <p id="thanksMsg" style="color:#444; font-size:1.1rem; line-height:1.6;">thank you to come my life and make me happy make more chalant in evry thing you are like my second mother (mummy 😋)</p>
         <div style="margin-top:18px;"><button class="btn" id="slide4Next">Next</button></div>
     </div>
 
-    <!-- Fifth Slide -->
+    <!-- Fifth Slide (Penguin Question) -->
     <div class="card" id="slide5" style="display:none;">
         <div class="floating-q">Will you be my penguin?</div>
         <div style="margin-top:18px; display:flex; justify-content:center; gap:12px;">
@@ -265,24 +261,14 @@
         </div>
     </div>
 
-    <!-- Sixth Slide -->
-    <div class="card" id="slide6" style="display:none;">
-        <div id="resultBox" style="color:#444; font-size:1.1rem; line-height:1.6; min-height:60px;"></div>
-        <div class="cry-container" id="cryContainer"></div>
-        <div style="margin-top:12px;">
-            <button class="btn" id="goHomeBtn">Go Home</button>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // UPDATED CUSTOMIZATION
             const recipientName = "ANANYA (anu)"; 
             const yourSpecialParagraph = "Happy birthday ANANYA (anu) to the prettiest girl, i never want to see again. Who I love fiercely, even though you drive me absolutely crazy and completely own my soul 😙😙 (yours phulei🥰)";
 
             document.getElementById('title').innerText = `Happy Birthday, ${recipientName}!`;
 
-            // Setup Balloons
+            // Balloon Generation
             const balloonColors = ['#ff6b6b', '#ff9f43', '#0abde3', '#10ac84', '#ee5253'];
             const balloonContainer = document.getElementById('balloons');
             for (let i = 0; i < 15; i++) {
@@ -294,25 +280,26 @@
                 balloonContainer.appendChild(balloon);
             }
 
-            // Navigation Logic
+            // Candle Interaction
             const flames = document.querySelectorAll('.flame');
             flames.forEach(f => f.addEventListener('click', () => {
                 f.classList.add('blown-out');
                 if(Array.from(flames).every(fl => fl.classList.contains('blown-out'))) triggerConfetti();
             }));
 
+            // Navigation
             document.getElementById('actionBtn').addEventListener('click', () => {
                 document.getElementById('cardMain').style.display = 'none';
                 document.getElementById('slide2').style.display = 'block';
-                startNoFloating();
+                startNoFloating(); // Start moving the No button
             });
 
             document.getElementById('yesBtn').addEventListener('click', () => {
                 triggerConfetti();
+                stopNoFloating();
                 document.getElementById('slide2').style.display = 'none';
                 document.getElementById('slide3').style.display = 'block';
                 document.getElementById('finalMsg').innerText = yourSpecialParagraph;
-                stopNoFloating();
             });
 
             document.getElementById('slide3Next').addEventListener('click', () => {
@@ -331,24 +318,33 @@
             });
 
             document.getElementById('pengNo').addEventListener('click', () => {
-                document.getElementById('slide5').style.display = 'none';
-                document.getElementById('slide6').style.display = 'block';
-                document.getElementById('resultBox').innerText = "It's ok 👍 thanks";
+                alert("Oh no! 😭");
             });
 
-            document.getElementById('goHomeBtn').addEventListener('click', () => window.location.reload());
-
-            // Floating "No" Button logic
+            // FASTER FLOATING NO BUTTON LOGIC
             let noInterval;
             const noBtn = document.getElementById('noBtn');
+            const box = document.getElementById('slideButtons');
+
             function startNoFloating() {
+                // Moving every 200 milliseconds for a "faster" feel
                 noInterval = setInterval(() => {
-                    const rect = document.getElementById('slideButtons').getBoundingClientRect();
-                    noBtn.style.left = Math.random() * (rect.width - 50) + "px";
-                    noBtn.style.top = Math.random() * (rect.height - 40) + "px";
-                }, 400);
+                    const boxWidth = box.clientWidth;
+                    const boxHeight = box.clientHeight;
+                    const btnWidth = noBtn.offsetWidth;
+                    const btnHeight = noBtn.offsetHeight;
+
+                    const newLeft = Math.random() * (boxWidth - btnWidth);
+                    const newTop = Math.random() * (boxHeight - btnHeight);
+
+                    noBtn.style.left = newLeft + "px";
+                    noBtn.style.top = newTop + "px";
+                }, 200); 
             }
-            function stopNoFloating() { clearInterval(noInterval); }
+
+            function stopNoFloating() {
+                clearInterval(noInterval);
+            }
 
             function triggerConfetti() {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
