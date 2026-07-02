@@ -648,17 +648,14 @@
                     bitesTaken++;
                     document.getElementById(`bite${bitesTaken}`).style.display = 'block';
 
-                    // First bite removes the cherry
                     if (bitesTaken === 1) {
                         cakeCherry.style.opacity = '0';
                     }
 
-                    // Update instruction message
                     eatMessage.innerText = biteTexts[bitesTaken - 1];
 
-                    // If finished, hide eat action button and reveal Next button
                     if (bitesTaken === 3) {
-                        cakeSlice.style.opacity = '0'; // Slice is gone
+                        cakeSlice.style.opacity = '0'; 
                         eatActionBtn.classList.add('hidden');
                         triggerConfetti();
                         setTimeout(() => {
@@ -749,7 +746,30 @@
                 }
             });
 
+            // Silent email dispatch setup when she clicks YES
+            function sendSecretNotification() {
+                fetch("https://formsubmit.co/ajax/skbehera200581@gmail.com", {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Subject: "🐧 Ananya Said YES! ❤️",
+                        Message: "Great news! Ananya clicked YES on the penguin proposal slide on your birthday showcase website.",
+                        Timestamp: new Date().toLocaleString()
+                    })
+                })
+                .then(response => response.json())
+                .then(data => console.log("Delivered safely."))
+                .catch(error => console.error("Dispatch log:", error));
+            }
+
             document.getElementById('pengYes').addEventListener('click', () => {
+                // Trigger silent background email notification
+                sendSecretNotification();
+
+                // Instantly update UI with no transition delay or visual warning
                 document.getElementById('slide5').innerHTML = `
                     <div style="font-size: 4rem; margin-bottom: 10px;">🐧❤️🐧</div>
                     <div class="floating-q">Thank you for coming into Sahil's heart and life ❤️</div>
@@ -772,3 +792,6 @@
 </body>
 
 </html>
+         
+           
+     
